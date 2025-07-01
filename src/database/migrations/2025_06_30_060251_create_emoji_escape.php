@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('client_id')->nullable(false);
             $table->integer('clear_score')->nullable(false);
             $table->time('clear_time')->nullable(false);
-            $table->timestamp('created_at')->nullable(false);
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
