@@ -45,6 +45,23 @@ services:
     networks:
       - laravel_network
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: laravel_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - laravel_network
+    depends_on:
+      - db
+
   redis:
     image: redis:alpine
     container_name: laravel_redis
