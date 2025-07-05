@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConnectController;
+use App\Http\Controllers\ClientIdController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // API Routes
 Route::get('/connect', [ConnectController::class, 'index']);
+Route::post('/clientId', [ClientIdController::class, 'store']);
