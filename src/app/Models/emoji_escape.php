@@ -16,6 +16,7 @@ class emoji_escape extends Model
         'client_id',
         'clear_score',
         'clear_time',
+        'created_at'
     ];
 
     protected $casts = [

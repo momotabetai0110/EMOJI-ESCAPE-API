@@ -2,12 +2,11 @@
 src/vendor/
 src/node_modules/
 src/.env
-src/.env.backup
-src/.phpunit.result.cache
-src/Homestead.json
-src/Homestead.yaml
-src/npm-debug.log
-src/yarn-error.log
+src/storage/logs/*
+src/storage/framework/cache/*
+src/storage/framework/sessions/*
+src/storage/framework/views/*
+src/bootstrap/cache/*
 
 # Docker
 .dockerignore
@@ -21,6 +20,3 @@ src/yarn-error.log
 # OS
 .DS_Store
 Thumbs.db
-
-# Logs
-*.log

@@ -28,6 +28,7 @@ class EmojiEscapeSeeder extends Seeder
                     'client_id' => $clientId,
                     'clear_score' => $i . $j . '0', //3桁のスコア
                     'clear_time' => '00:00:10.' . $i . $j, //10秒+ミリ秒
+                    'created_at' => now()
                 ];
                 $emojiEscape->insert($insertData);
             }

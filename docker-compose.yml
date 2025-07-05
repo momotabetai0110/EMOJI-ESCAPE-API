@@ -4,36 +4,27 @@ services:
   app:
     build:
       context: .
-      dockerfile: docker/php/Dockerfile
-    container_name: laravel_app
+      dockerfile: Dockerfile
+    container_name: EMOJI-ESCAPE-API
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
       - ./src:/var/www
-      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    networks:
-      - laravel_network
-
-  webserver:
-    image: nginx:alpine
-    container_name: laravel_nginx
-    restart: unless-stopped
     ports:
-      - "8000:80"
-    volumes:
-      - ./src:/var/www
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - "8000:8000"
     networks:
       - laravel_network
+    depends_on:
+      - db
 
   db:
     image: mysql:8.0
-    container_name: laravel_db
+    container_name: EMOJI-ESCAPE-DB
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_PASSWORD: secret
+      MYSQL_PASSWORD: password
       MYSQL_USER: laravel
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
@@ -41,13 +32,12 @@ services:
       - "3306:3306"
     volumes:
       - dbdata:/var/lib/mysql
-      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - laravel_network
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: laravel_phpmyadmin
+    container_name: EMOJI-ESCAPE-phpmyadmin
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -56,20 +46,10 @@ services:
       PMA_PORT: 3306
       PMA_USER: root
       PMA_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
     networks:
       - laravel_network
     depends_on:
       - db
-
-  redis:
-    image: redis:alpine
-    container_name: laravel_redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    networks:
-      - laravel_network
 
 networks:
   laravel_network:

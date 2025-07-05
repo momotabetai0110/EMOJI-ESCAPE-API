@@ -1,132 +1,91 @@
-# Laravel 11 Docker Setup
+# Laravel 12 Docker Environment
 
-このプロジェクトは、Laravel 11をDockerで構築するためのセットアップです。
+Laravel 12、MySQL、phpMyAdminを含むDocker環境です。
 
 ## 構成
 
-- **PHP 8.2** (FPM)
-- **Nginx** (Webサーバー)
-- **MySQL 8.0** (データベース)
-- **Redis** (キャッシュ)
+- **Laravel 12**: PHP 8.2 + Laravel 12
+- **MySQL 8.0**: データベース
+- **phpMyAdmin**: データベース管理ツール
 
 ## セットアップ手順
 
-### 1. 前提条件
+### 1. Laravelプロジェクトの作成
 
-- Docker
-- Docker Compose
-
-### 2. Laravel 11のインストール
-
+Windows環境の場合:
 ```bash
-# インストールスクリプトを実行
-chmod +x install-laravel.sh
-./install-laravel.sh
+setup-laravel.bat
 ```
 
-### 3. Dockerコンテナの起動
-
+Linux/Mac環境の場合:
 ```bash
-# コンテナをビルドして起動
-docker-compose up -d --build
+chmod +x setup-laravel.sh
+./setup-laravel.sh
 ```
 
-### 4. アプリケーションキーの生成
+### 2. Dockerコンテナの起動
 
 ```bash
-# Laravelアプリケーションキーを生成
+docker-compose up -d
+```
+
+### 3. アプリケーションキーの生成
+
+```bash
 docker-compose exec app php artisan key:generate
 ```
 
-### 5. データベースマイグレーション
+### 4. データベースマイグレーション
 
 ```bash
-# マイグレーションを実行
 docker-compose exec app php artisan migrate
 ```
 
-## アクセス
+## アクセス方法
 
-- **Webアプリケーション**: http://localhost:8000
-- **MySQL**: localhost:3306
-- **Redis**: localhost:6379
+- **Laravel API**: http://localhost:8000
+- **phpMyAdmin**: http://localhost:8080
+  - ユーザー名: `root`
+  - パスワード: `root`
 
-## データベース接続情報
+## データベース設定
 
-- **ホスト**: db
-- **データベース**: laravel
-- **ユーザー名**: laravel
-- **パスワード**: secret
-- **ルートパスワード**: root
+- **ホスト**: `db`
+- **データベース名**: `laravel`
+- **ユーザー名**: `laravel`
+- **パスワード**: `password`
 
 ## 便利なコマンド
 
+### コンテナ内でコマンド実行
 ```bash
-# コンテナの停止
-docker-compose down
-
-# ログの確認
-docker-compose logs -f
-
-# 特定のサービスのログ
-docker-compose logs -f app
-
-# Composerコマンドの実行
-docker-compose exec app composer install
-
-# Artisanコマンドの実行
-docker-compose exec app php artisan list
-
-# コンテナ内でシェルを開く
-docker-compose exec app bash
+docker-compose exec app php artisan [command]
 ```
 
-## ファイル構造
+### コンテナの停止
+```bash
+docker-compose down
+```
+
+### コンテナの再起動
+```bash
+docker-compose restart
+```
+
+### ログの確認
+```bash
+docker-compose logs -f
+```
+
+## ファイル構成
 
 ```
 .
-├── docker-compose.yml
-├── docker/
-│   ├── nginx/
-│   │   └── conf.d/
-│   │       └── app.conf
-│   ├── php/
-│   │   ├── Dockerfile
-│   │   └── local.ini
-│   └── mysql/
-│       └── my.cnf
-├── src/          # Laravelアプリケーション
-├── install-laravel.sh
-└── README.md
-```
-
-## 解決方法
-
-### 1. Laravelプロジェクトを`src`ディレクトリに移動
-
-#### 手順
-1. ルート直下のLaravel関連ファイル・ディレクトリ（`app/`, `bootstrap/`, `config/`, `public/`, `resources/`, `routes/`, `storage/`, `vendor/`, `.env`, `artisan`など）を`src/`ディレクトリにまとめて移動します。
-
-2. その後、再度コンテナを再起動します。
-
-### 2. コマンド例（Windows Bash/MINGW64）
-
-```bash
-mkdir -p src
-mv app bootstrap config database lang public resources routes storage tests vendor .env .env.example artisan composer.json composer.lock package.json phpunit.xml vite.config.js src/
-```
-
-（ファイルが存在しない場合はエラーが出ますが、無視してOKです）
-
-### 3. 再度コンテナを再起動
-
-```bash
-docker-compose down
-docker-compose up -d --build
-```
-
-### 4. ブラウザで再度 http://localhost:8000 を確認
-
-**もし自動で移動したい場合は「自動で移動して」とご指示ください。手動でやる場合は上記コマンドを実行してください。**
-
-ご不明点があればご質問ください！ 
+├── docker-compose.yml    # Docker Compose設定
+├── Dockerfile           # Laravel用Dockerfile
+├── .dockerignore        # Docker除外ファイル
+├── setup-laravel.bat    # Windows用セットアップ
+├── setup-laravel.sh     # Linux/Mac用セットアップ
+├── src/                 # Laravelプロジェクト（自動生成）
+└── README.md           # このファイル
+``` 
