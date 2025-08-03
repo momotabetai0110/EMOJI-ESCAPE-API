@@ -25,3 +25,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/connect', [ConnectController::class, 'index']);
 Route::post('/clientId', [ClientIdController::class, 'store']);
 Route::post('/rankings', [RankingsController::class, 'store']);
+Route::get('/rankings', [RankingsController::class, 'index']);

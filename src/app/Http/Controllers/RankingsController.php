@@ -23,7 +23,8 @@ class RankingsController extends Controller
     public function index(Request $request)
     {
         // TODO: ランキング取得ロジック
-        return response()->json([]);
+        $rankingList = $this->rankingService->getRanking();
+        return $rankingList;
     }
 
     /**

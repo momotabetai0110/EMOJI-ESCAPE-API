@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\emoji_escape;
 
+use function Laravel\Prompts\clear;
+
 class RankingService
 {
     private emoji_escape $emojiEscape;
@@ -17,7 +19,12 @@ class RankingService
      * ランキング取得
      * @return array
      */
-    public function getRanking() {}
+    public function getRanking()
+    {
+        $rankingList = $this->emojiEscape->orderBy('clear_score', 'desc')->select('client_id', 'clear_score', 'clear_time')->get();
+
+        return $rankingList;
+    }
 
     /**
      * クリアデータのインサートとランキング更新チェック
