@@ -22,12 +22,16 @@ class RankingService
     public function getRanking($clientId)
     {
         if ($clientId) {
-            $rankingList = $this->emojiEscape->where('client_id', $clientId)->orderBy('clear_score', 'desc')->select('client_id', 'clear_score', 'clear_time')->get();
-        } else {
-            $rankingList = $this->emojiEscape->orderBy('clear_score', 'desc')->select('client_id', 'clear_score', 'clear_time')->get();
-        }
+            $response = [];
+            $response['rank'] = $this->emojiEscape->getRankByClientId($clientId);
+            $highScore = $this->emojiEscape->where('client_id', $clientId)->orderBy('clear_score', 'desc')->select('clear_score')->first();
+            $response['high_score'] = $highScore['clear_score'];
 
-        return $rankingList;
+            return $response;
+        } else {
+            $rankingList = $this->emojiEscape->orderBy('clear_score', 'desc')->select('client_id', 'clear_score', 'created_at')->get();
+            return $rankingList;
+        }
     }
 
     /**
