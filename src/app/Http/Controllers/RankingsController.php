@@ -22,8 +22,8 @@ class RankingsController extends Controller
      */
     public function index(Request $request)
     {
-        // TODO: ランキング取得ロジック
-        $rankingList = $this->rankingService->getRanking();
+        $clientId = $request->query('clientId');
+        $rankingList = $this->rankingService->getRanking($clientId);
         return $rankingList;
     }
 

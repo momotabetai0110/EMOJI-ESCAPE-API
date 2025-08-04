@@ -19,9 +19,13 @@ class RankingService
      * ランキング取得
      * @return array
      */
-    public function getRanking()
+    public function getRanking($clientId)
     {
-        $rankingList = $this->emojiEscape->orderBy('clear_score', 'desc')->select('client_id', 'clear_score', 'clear_time')->get();
+        if ($clientId) {
+            $rankingList = $this->emojiEscape->where('client_id', $clientId)->orderBy('clear_score', 'desc')->select('client_id', 'clear_score', 'clear_time')->get();
+        } else {
+            $rankingList = $this->emojiEscape->orderBy('clear_score', 'desc')->select('client_id', 'clear_score', 'clear_time')->get();
+        }
 
         return $rankingList;
     }
